@@ -15,36 +15,18 @@ public struct FuzzyMatcher<Candidate: MatchCandidate>: Matcher {
         against candidate: Candidate
     ) -> MatchResult<Candidate.MatchID> {
         guard !query.isEmpty else {
-            return .noMatch(candidateID: candidate.matchID)
-        }
-
-        let fieldResults = candidate.allFields.compactMap { field in
-            FuzzyAlgorithm.fieldResult(
-                field: field,
-                query: query,
-                options: options
+            return .noMatch(
+                candidateID: candidate.matchID
             )
         }
 
-        guard !fieldResults.isEmpty else {
-            return .noMatch(candidateID: candidate.matchID)
-        }
-
-        let totalValue = fieldResults.reduce(into: 0) { partial, fieldResult in
-            partial += fieldResult.score.value
-        }
-
-        let totalComponents = fieldResults.flatMap(\.score.components)
-
-        return MatchResult(
-            candidateID: candidate.matchID,
-            didMatch: true,
-            score: MatchScore(
-                value: totalValue,
-                components: totalComponents
+        return FuzzyAlgorithm.match(
+            query: query,
+            against: FuzzyAlgorithm.prepare(
+                candidate,
+                normalization: query.options
             ),
-            fieldResults: fieldResults,
-            diagnostics: []
+            options: options
         )
     }
 }

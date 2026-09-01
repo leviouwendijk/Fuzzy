@@ -14,6 +14,90 @@ private struct FuzzyIndexedTokenMatch {
 }
 
 enum FuzzyAlgorithm {
+    static func prepare(
+        field: MatchField,
+        normalization: TokenNormalizationOptions
+    ) -> FuzzyPreparedField {
+        FuzzyPreparedField(
+            field: field,
+            tokens: candidateTokens(
+                for: field.text,
+                normalization: normalization
+            )
+        )
+    }
+
+    static func prepare<Candidate: MatchCandidate>(
+        _ candidate: Candidate,
+        normalization: TokenNormalizationOptions
+    ) -> FuzzyPreparedCandidate<Candidate> {
+        FuzzyPreparedCandidate(
+            candidate: candidate,
+            fields: candidate.allFields.map {
+                prepare(
+                    field: $0,
+                    normalization: normalization
+                )
+            }
+        )
+    }
+
+    static func match<Candidate: MatchCandidate>(
+        query: MatchQuery,
+        against candidate:
+            FuzzyPreparedCandidate<Candidate>,
+        options: FuzzyOptions
+    ) -> MatchResult<Candidate.MatchID> {
+        let queryTokens = query.tokens.filter {
+            !$0.normalizedValue.isEmpty
+        }
+
+        guard !queryTokens.isEmpty else {
+            return .noMatch(
+                candidateID: candidate.candidate.matchID
+            )
+        }
+
+        let fieldResults = candidate.fields.compactMap {
+            fieldResult(
+                field: $0.field,
+                candidateTokens: $0.tokens,
+                queryTokens: queryTokens,
+                query: query,
+                options: options
+            )
+        }
+
+        guard !fieldResults.isEmpty else {
+            return .noMatch(
+                candidateID: candidate.candidate.matchID
+            )
+        }
+
+        let totalValue = fieldResults.reduce(
+            into: 0
+        ) {
+            partial,
+            fieldResult in
+
+            partial += fieldResult.score.value
+        }
+        let totalComponents = fieldResults.flatMap(
+            \.score.components
+        )
+
+        return MatchResult(
+            candidateID: candidate.candidate.matchID,
+            didMatch: true,
+            score: MatchScore(
+                value: totalValue,
+                components: totalComponents
+            ),
+            fieldResults: fieldResults,
+            diagnostics: []
+        )
+    }
+
     static func fieldResult(
         field: MatchField,
         query: MatchQuery,
@@ -22,17 +106,29 @@ enum FuzzyAlgorithm {
         let queryTokens = query.tokens.filter {
             !$0.normalizedValue.isEmpty
         }
-
-        guard !queryTokens.isEmpty else {
-            return nil
-        }
-
-        let candidateTokens = candidateTokens(
-            for: field.text,
+        let prepared = prepare(
+            field: field,
             normalization: query.options
         )
 
-        guard !candidateTokens.isEmpty else {
+        return fieldResult(
+            field: prepared.field,
+            candidateTokens: prepared.tokens,
+            queryTokens: queryTokens,
+            query: query,
+            options: options
+        )
+    }
+
+    static func fieldResult(
+        field: MatchField,
+        candidateTokens: [TextToken],
+        queryTokens: [TextToken],
+        query: MatchQuery,
+        options: FuzzyOptions
+    ) -> MatchedFieldResult? {
+        guard !queryTokens.isEmpty,
+              !candidateTokens.isEmpty else {
             return nil
         }
 
@@ -57,9 +153,13 @@ enum FuzzyAlgorithm {
                 continue
             }
 
-            usedTokenIndices.insert(bestMatch.tokenIndex)
+            usedTokenIndices.insert(
+                bestMatch.tokenIndex
+            )
             totalScore = totalScore + bestMatch.score
-            collectedSpans.append(contentsOf: bestMatch.spans)
+            collectedSpans.append(
+                contentsOf: bestMatch.spans
+            )
             matchedQueryTokenCount += 1
         }
 
@@ -68,12 +168,15 @@ enum FuzzyAlgorithm {
         }
 
         totalScore = totalScore.adding(
-            value: field.weight * options.bonus.fieldweight,
+            value:
+                field.weight
+                * options.bonus.fieldweight,
             name: "fieldWeight",
             detail: field.name
         )
 
-        if matchedQueryTokenCount == queryTokens.count && queryTokens.count > 1 {
+        if matchedQueryTokenCount == queryTokens.count,
+           queryTokens.count > 1 {
             totalScore = totalScore.adding(
                 value: options.bonus.allquerytokens,
                 name: "allQueryTokens"
@@ -82,8 +185,12 @@ enum FuzzyAlgorithm {
 
         return MatchedFieldResult(
             field: field,
-            score: matchScore(from: totalScore),
-            spans: mergedSpans(collectedSpans),
+            score: matchScore(
+                from: totalScore
+            ),
+            spans: mergedSpans(
+                collectedSpans
+            ),
             diagnostics: []
         )
     }

@@ -31,24 +31,15 @@ public struct FuzzyRanker<Candidate: MatchCandidate>: Sendable {
                 return nil
             }
 
-            return Ranked(
-                value: result,
-                score: rankingScore(
-                    from: result.score
-                ),
+            return FuzzyRanking.ranked(
+                result,
                 sourceOrder: index
             )
         }
 
-        return Ranking.select(
+        return FuzzyRanking.select(
             ranked,
-            options: selection,
-            tieBreak: { lhs, rhs in
-                tieBreak(
-                    lhs,
-                    rhs
-                )
-            }
+            options: selection
         )
     }
 
@@ -65,38 +56,3 @@ public struct FuzzyRanker<Candidate: MatchCandidate>: Sendable {
     }
 }
 
-private extension FuzzyRanker {
-    func rankingScore(
-        from matchScore: MatchScore
-    ) -> RankingScore {
-        RankingScore(
-            value: matchScore.value,
-            components: matchScore.components.map { component in
-                RankingScoreComponent(
-                    name: component.name,
-                    value: component.value,
-                    detail: component.detail
-                )
-            }
-        )
-    }
-
-    func tieBreak(
-        _ lhs: Ranked<MatchResult<Candidate.MatchID>>,
-        _ rhs: Ranked<MatchResult<Candidate.MatchID>>
-    ) -> Bool {
-        let lhsPrimary = lhs.value.fieldResults.contains {
-            $0.field.role == .primary
-        }
-
-        let rhsPrimary = rhs.value.fieldResults.contains {
-            $0.field.role == .primary
-        }
-
-        if lhsPrimary != rhsPrimary {
-            return lhsPrimary
-        }
-
-        return false
-    }
-}

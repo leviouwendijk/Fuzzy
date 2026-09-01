@@ -7,7 +7,7 @@
       "location" : "https://github.com/leviouwendijk/Matching.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c18f9be3f8c8e05ca0645bb3de0ed1dad807a3a1"
+        "revision" : "5ac7de66e96468fb00a5fb5748fd85101a009968"
       }
     },
     {
@@ -16,7 +16,7 @@
       "location" : "https://github.com/leviouwendijk/Position.git",
       "state" : {
         "branch" : "master",
-        "revision" : "70fd78230c3452d9a4471222d64324a2c084351d"
+        "revision" : "c80214283130c1bd4fc1c54dd5f3c574e3e4986c"
       }
     },
     {
@@ -34,7 +34,7 @@
       "location" : "https://github.com/leviouwendijk/Tokens.git",
       "state" : {
         "branch" : "master",
-        "revision" : "6ca52a81000deeb3316b75deded8a3f29e34adfe"
+        "revision" : "4e6c16afcaa81606fa7b2dcd80f9a25965403687"
       }
     }
   ],
