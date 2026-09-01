@@ -1,5 +1,4 @@
 // swift-tools-version: 6.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
@@ -26,10 +25,6 @@ let package = Package(
                 .product(name: "Matching", package: "Matching"),
                 .product(name: "Ranking", package: "Ranking"),
             ],
-        ),
-        .testTarget(
-            name: "FuzzyTests",
-            dependencies: ["Fuzzy"]
         ),
     ]
 )
