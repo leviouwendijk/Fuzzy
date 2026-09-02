@@ -4,10 +4,17 @@ import PackageDescription
 
 let package = Package(
     name: "Fuzzy",
+    platforms: [
+        .macOS(.v13)
+    ],
     products: [
         .library(
             name: "Fuzzy",
             targets: ["Fuzzy"]
+        ),
+        .executable(
+            name: "fuzzytest",
+            targets: ["FuzzyTestFlows"]
         ),
     ],
     dependencies: [
@@ -15,6 +22,7 @@ let package = Package(
         .package(url: "https://github.com/leviouwendijk/Position.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Matching.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Ranking.git", branch: "master"),
+        .package(url: "https://github.com/leviouwendijk/TestFlows.git", branch: "master"),
     ],
     targets: [
         .target(
@@ -24,6 +32,16 @@ let package = Package(
                 .product(name: "Position", package: "Position"),
                 .product(name: "Matching", package: "Matching"),
                 .product(name: "Ranking", package: "Ranking"),
+            ],
+        ),
+        .executableTarget(
+            name: "FuzzyTestFlows",
+            dependencies: [
+                "Fuzzy",
+                .product(name: "Matching", package: "Matching"),
+                .product(name: "Ranking", package: "Ranking"),
+                .product(name: "Tokens", package: "Tokens"),
+                .product(name: "TestFlows", package: "TestFlows"),
             ],
         ),
     ]
