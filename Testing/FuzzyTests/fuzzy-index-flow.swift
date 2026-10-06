@@ -1,12 +1,12 @@
 import Fuzzy
 import Matching
 import Ranking
-import TestFlows
+import Testing
 import Tokens
 
-extension FuzzyFlowSuite {
-    static var indexEquivalenceFlow: TestFlow {
-        TestFlow(
+extension FuzzyTestSuite {
+    static var indexEquivalenceSuite: TestSuite {
+        TestSuite(
             "fuzzy-index-equivalence",
             tags: [
                 "fuzzy",
@@ -15,7 +15,7 @@ extension FuzzyFlowSuite {
                 "regression",
             ]
         ) {
-            Step(
+            Test(
                 "prepared index matches the ranker across fuzzy query shapes"
             ) {
                 let candidates = standardCandidates
@@ -56,7 +56,7 @@ extension FuzzyFlowSuite {
                 }
             }
 
-            Step(
+            Test(
                 "query normalization mismatch falls back without changing results"
             ) {
                 let candidates = standardCandidates
@@ -105,7 +105,7 @@ extension FuzzyFlowSuite {
                 )
             }
 
-            Step(
+            Test(
                 "relaxed token constraints bypass recall-unsafe character pruning"
             ) {
                 let candidates = standardCandidates
@@ -156,7 +156,7 @@ extension FuzzyFlowSuite {
                 )
             }
 
-            Step(
+            Test(
                 "selection limits preserve baseline source-order ties"
             ) {
                 let candidates = tiedCandidates
@@ -209,7 +209,7 @@ extension FuzzyFlowSuite {
     }
 }
 
-private extension FuzzyFlowSuite {
+private extension FuzzyTestSuite {
     struct RankedSignature: Equatable {
         let candidateID: String
         let rankingScore: Int

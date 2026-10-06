@@ -1,6 +1,15 @@
 {
-  "originHash" : "88a3c9f68f19c3768d1c4bf2ba856c5dae7d33782359a8ba9407dfaea138ddda",
+  "originHash" : "d1315f48651fa5c811a8380f69a63ac1c6535ef311e1fd19b5be924c08952693",
   "pins" : [
+    {
+      "identity" : "atomos",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leviouwendijk/Atomos.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "5ffdb160c4913e02214020eb75ac620900cf2914"
+      }
+    },
     {
       "identity" : "matching",
       "kind" : "remoteSourceControl",
@@ -16,7 +25,7 @@
       "location" : "https://github.com/leviouwendijk/Position.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c80214283130c1bd4fc1c54dd5f3c574e3e4986c"
+        "revision" : "f4b2a54d00898e52111ac452b851cb00cf9538aa"
       }
     },
     {
@@ -25,7 +34,16 @@
       "location" : "https://github.com/leviouwendijk/Ranking.git",
       "state" : {
         "branch" : "master",
-        "revision" : "5180cfb8c8e0ff6ec6224b3430507cccd83995a4"
+        "revision" : "2ef45291376aa3b4e868d963acde506891be4769"
+      }
+    },
+    {
+      "identity" : "testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leviouwendijk/Testing.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "105eecb68c3db99119dff3afeb846b7923abbc85"
       }
     },
     {

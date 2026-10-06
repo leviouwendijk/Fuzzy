@@ -14,7 +14,7 @@ let package = Package(
         ),
         .executable(
             name: "fuzzytest",
-            targets: ["FuzzyTestFlows"]
+            targets: ["FuzzyTests"]
         ),
     ],
     dependencies: [
@@ -22,7 +22,7 @@ let package = Package(
         .package(url: "https://github.com/leviouwendijk/Position.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Matching.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Ranking.git", branch: "master"),
-        .package(url: "https://github.com/leviouwendijk/TestFlows.git", branch: "master"),
+        .package(url: "https://github.com/leviouwendijk/Testing.git", branch: "master"),
     ],
     targets: [
         .target(
@@ -35,14 +35,15 @@ let package = Package(
             ],
         ),
         .executableTarget(
-            name: "FuzzyTestFlows",
+            name: "FuzzyTests",
             dependencies: [
                 "Fuzzy",
                 .product(name: "Matching", package: "Matching"),
                 .product(name: "Ranking", package: "Ranking"),
                 .product(name: "Tokens", package: "Tokens"),
-                .product(name: "TestFlows", package: "TestFlows"),
+                .product(name: "Testing", package: "Testing"),
             ],
+            path: "Testing/FuzzyTests"
         ),
     ]
 )
