@@ -14,7 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/leviouwendijk/Tokens.git", branch: "master"),
+        .package(url: "https://github.com/swift-langs/Tokens.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Matching.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Ranking.git", branch: "master"),
         .package(url: "https://github.com/leviouwendijk/Testing.git", branch: "master"),
