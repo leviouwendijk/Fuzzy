@@ -4,7 +4,7 @@
     {
       "identity" : "atomos",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/leviouwendijk/Atomos.git",
+      "location" : "https://github.com/swift-lco/Atomos.git",
       "state" : {
         "branch" : "master",
         "revision" : "5ffdb160c4913e02214020eb75ac620900cf2914"
@@ -13,7 +13,7 @@
     {
       "identity" : "matching",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/leviouwendijk/Matching.git",
+      "location" : "https://github.com/swift-lco/Matching.git",
       "state" : {
         "branch" : "master",
         "revision" : "5ac7de66e96468fb00a5fb5748fd85101a009968"
@@ -22,7 +22,7 @@
     {
       "identity" : "position",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/leviouwendijk/Position.git",
+      "location" : "https://github.com/swift-lco/Position.git",
       "state" : {
         "branch" : "master",
         "revision" : "f4b2a54d00898e52111ac452b851cb00cf9538aa"
@@ -31,7 +31,7 @@
     {
       "identity" : "ranking",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/leviouwendijk/Ranking.git",
+      "location" : "https://github.com/swift-lco/Ranking.git",
       "state" : {
         "branch" : "master",
         "revision" : "2ef45291376aa3b4e868d963acde506891be4769"
